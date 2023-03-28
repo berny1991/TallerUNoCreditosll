@@ -189,3 +189,4 @@ if __name__ == '__main__':
     en el archivo de configuración.
     """
     serve(app, host=dataConfig["url-backend"], port=dataConfig["port"])
+
