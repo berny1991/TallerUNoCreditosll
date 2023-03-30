@@ -32,6 +32,7 @@ y tipos de peticiones a las cuales el servidor responderá CRUD.
 
 #####################################METODOS-ESTUDIENATES################################
 
+#########################Servicios Estudiante###################################
 @app.route("/estudiantes", methods=['GET'])
 def getEstudiantes():
     json = miControladorEstudiante.index()
@@ -64,43 +65,16 @@ def eliminarEstudiante(id):
     return jsonify(json)
 
 
-############################################################################################
-##################################METODOS-DEPARAMENTOS######################################
-
-
-@app.route("/departamentos", methods=['GET'])
-def getDepartamento():
-    json = miControladorDepartamento.index()
-    return jsonify(json)
-
-
-@app.route("/departamentos", methods=['POST'])
-def crearDepartamento():
-    data = request.get_json()
-    json = miControladorDepartamento.create(data)
-    return jsonify(json)
-
-
-@app.route("/departamentos/<string:id>", methods=['PUT'])
-def modificarDepartamento(id):
-    data = request.get_json()
-    json = miControladorDepartamento.update(id, data)
-    return jsonify(json)
-
-
-@app.route("/departamentos/<string:id>", methods=['DELETE'])
-def eliminarDepartamento(id):
-    json = miControladorDepartamento.delete(id)
-    return jsonify(json)
-
-
-########################################################################################
-
-####################################METODO-MATERIA########################################
-
+############################Servicios Materia#################################
 @app.route("/materias", methods=['GET'])
-def getMateria():
+def getMaterias():
     json = miControladorMateria.index()
+    return jsonify(json)
+
+
+@app.route("/materias/<string:id>", methods=['GET'])
+def getMateria(id):
+    json = miControladorMateria.show(id)
     return jsonify(json)
 
 
@@ -124,36 +98,92 @@ def eliminarMateria(id):
     return jsonify(json)
 
 
-###################################################METODOS-DE-INSCRIPCION###################################
+@app.route("/materias/<string:id>/departamento/<string:id_departamento>", methods=['PUT'])
+def asignarDepartamentoAMateria(id, id_departamento):
+    json = miControladorMateria.asignarDepartamento(id, id_departamento)
+    return jsonify(json)
 
+
+##############################################################################
+
+
+##########################Servicios Departamento##############################
+
+@app.route("/departamentos", methods=['GET'])
+def getDepartamentos():
+    json = miControladorDepartamento.index()
+    return jsonify(json)
+
+
+@app.route("/departamentos/<string:id>", methods=['GET'])
+def getDepartamento(id):
+    json = miControladorDepartamento.show(id)
+    return jsonify(json)
+
+
+@app.route("/departamentos/<string:id>/materias", methods=['GET'])
+def getMateriasDepartamento(id):
+    json = miControladorDepartamento.getMaterias(id)
+    return jsonify(json)
+
+
+@app.route("/departamentos", methods=['POST'])
+def crearDepartamento():
+    data = request.get_json()
+    json = miControladorDepartamento.create(data)
+    return jsonify(json)
+
+
+@app.route("/departamentos/<string:id>", methods=['PUT'])
+def modificarDepartamento(id):
+    data = request.get_json()
+    json = miControladorDepartamento.update(id, data)
+    return jsonify(json)
+
+
+@app.route("/departamentos/<string:id>", methods=['DELETE'])
+def eliminarDepartamento(id):
+    json = miControladorDepartamento.delete(id)
+    return jsonify(json)
+
+
+##############################################################################
+
+##########################Servicios Inscripcion###############################
 
 @app.route("/inscripciones", methods=['GET'])
-def getInscripcion():
+def getInscripciones():
     json = miControladorInscripcion.index()
     return jsonify(json)
 
 
-@app.route("/inscripciones", methods=['POST'])
-def crearInscripcion():
+@app.route("/inscripciones/<string:id>", methods=['GET'])
+def getInscripcion(id):
+    json = miControladorInscripcion.show(id)
+    return jsonify(json)
+
+
+@app.route("/inscripciones/estudiante/<string:id_estudiante>/materia/<string:id_materia>", methods=['POST'])
+def crearInscripcion(id_estudiante, id_materia):
     data = request.get_json()
-    json = miControladorInscripcion.create(data)
+    json = miControladorInscripcion.create(data, id_estudiante, id_materia)
     return jsonify(json)
 
 
-@app.route("/inscripciones/<string:id>", methods=['PUT'])
-def modificarInscripcion(id):
+@app.route("/inscripciones/<string:id_inscripcion>/estudiante/<string:id_estudiante>/materia/<string:id_materia>", methods=['PUT'])
+def modificarInscripcion(id_inscripcion, id_estudiante, id_materia):
     data = request.get_json()
-    json = miControladorInscripcion.update(id, data)
+    json = miControladorInscripcion.update(id_inscripcion, data, id_estudiante, id_materia)
     return jsonify(json)
 
 
-@app.route("/Inscripciones/<string:id>", methods=['DELETE'])
-def eliminarInscripcion(id):
-    json = miControladorInscripcion.delete(id)
+@app.route("/inscripciones/<string:id_inscripcion>", methods=['DELETE'])
+def eliminarInscripcion(id_inscripcion):
+    json = miControladorInscripcion.delete(id_inscripcion)
     return jsonify(json)
 
-############################################################################################################
 
+##############################################################################
 
 """
 Servicio que el servidor ofrecerá, y este consiste en retornar un JSON el cual
