@@ -33,6 +33,8 @@ y tipos de peticiones a las cuales el servidor responderá CRUD.
 #####################################METODOS-ESTUDIENATES################################
 
 #########################Servicios Estudiante###################################
+
+
 @app.route("/estudiantes", methods=['GET'])
 def getEstudiantes():
     json = miControladorEstudiante.index()

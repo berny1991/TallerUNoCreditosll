@@ -13,18 +13,17 @@ visualizar, modificar y eliminar. (CRUD)
 
 
 class ControladorInscripcion():
-    """
-    constructor que permite llevar a cabo la creacion de instancias del controlador.
-    """
     def __init__(self):
         self.repositorioInscripcion = RepositorioInscripcion()
-        self.repositorioEstudiante = RepositorioEstudiante()
-        self.repositorioMateria = RepositorioMateria()
-        print("Creando Controlador")
+        self.repositorioEstudiantes = RepositorioEstudiante()
+        self.repositorioMaterias = RepositorioMateria()
 
     def index(self):
-        print("Listar inscripciones")
         return self.repositorioInscripcion.findAll()
+
+    """
+    Asignacion estudiante y materia a inscripción
+    """
 
     def create(self, infoInscripcion, id_estudiante, id_materia):
         nuevaInscripcion = Inscripcion(infoInscripcion)
@@ -35,8 +34,12 @@ class ControladorInscripcion():
         return self.repositorioInscripcion.save(nuevaInscripcion)
 
     def show(self, id):
-        laInscripcion = Inscripcion(self.repositorioInscripcion.findById(id))
-        return laInscripcion.__dict__
+        elInscripcion = Inscripcion(self.repositorioInscripcion.findById(id))
+        return elInscripcion.__dict__
+
+    """
+    Modificación de inscripción (estudiante y materia)
+    """
 
     def update(self, id, infoInscripcion, id_estudiante, id_materia):
         laInscripcion = Inscripcion(self.repositorioInscripcion.findById(id))
@@ -50,5 +53,4 @@ class ControladorInscripcion():
         return self.repositorioInscripcion.save(laInscripcion)
 
     def delete(self, id):
-        print("Elimiando inscripcion con id ", id)
         return self.repositorioInscripcion.delete(id)
